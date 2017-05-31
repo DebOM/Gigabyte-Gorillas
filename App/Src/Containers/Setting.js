@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { ScrollView, Text, Alert, View, Button, Image, StyleSheet, Switch, TextInput } from 'react-native';
-// import { Button, Card, Form, Item, Input, H1, H3, CardItem, Body, CheckBox } from 'native-base';
-import { Container, Thumbnail } from 'native-base';
+import { ScrollView, Text, Alert, View, Button, Image, StyleSheet, Switch, TextInput, AlertIOS, TouchableOpacity } from 'react-native';
+import {Thumbnail} from 'native-base';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
+import Snackbar from 'react-native-snackbar';
 
 const dummyUserData = {
     "user": {
@@ -54,11 +54,8 @@ const dummyUserData = {
     ]
 }
 
-const onButtonPress = () =>{
-  Alert.alert("button pressed")
-}
-
 //key={habit.id} habit={habit}
+
 
 export default class UserSettings extends Component {
   state = {
@@ -66,15 +63,20 @@ export default class UserSettings extends Component {
     allPrivate: false,
     email: dummyUserData.user.email,
   };
+  // this._saveResponse = this._saveResponse.bind(this);
   _toggleNotification = () => {
     this.setState({notification: !this.state.notification});
+    Snackbar.show({
+        title: 'Hello world',
+        duration: Snackbar.LENGTH_LONG,
+    });
   };
   _toggleAllPrivate = () => {
     this.setState({allPrivate: !this.state.allPrivate});
   };
-  _editEmail = () => {
-    Alert.alert("Yapp  :::::")
-  };
+  _saveResponse(promptValue) {
+    this.setState({ email: JSON.stringify(promptValue)});
+  }
 
     render() {
         return (
@@ -88,7 +90,7 @@ export default class UserSettings extends Component {
             {/* need to stylet all these text component with one style */}
                   <Text style={styles.textst}>User Name: {dummyUserData.user.username}</Text>
                   <Text style={styles.textst}> Email: {this.state.email}
-                    <Icon onPress = {() => this._editEmail()} name='pencil' style={{fontSize: 15, color: 'red'}}/>
+                    <Icon onPress={() => AlertIOS.prompt('Type in your Email', null , this._saveResponse)} name='pencil' style={{fontSize: 15, color: 'red'}}/>
                   </Text>
                   <Text style={styles.textst}>Facebook: {dummyUserData.user.facebook}</Text>
                   <Text style={styles.textst}>Full Name: {dummyUserData.user.fullname}</Text>
